@@ -1,4 +1,5 @@
 Learn Python
 Gui development
 coding python
-coding javascript
+Learn Javascript Later
+Learn Javascript

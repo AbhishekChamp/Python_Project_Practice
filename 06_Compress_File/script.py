@@ -1,23 +1,29 @@
 import PySimpleGUI as sg
+from zip_creator import make_archieve
 
+label1 = sg.Text("Select files to compress:")
+input1 = sg.Input()
+choose_button1 = sg.FilesBrowse('Choose', key="files")
 
-def widget(file_type):
-    """Creating label, input, choose button"""
-    if file_type ==  'Compress':
-        label = sg.Text('Select files to compress:')
-    elif file_type == 'Destination':
-        label = sg.Text('Select destination folder:')
-    input = sg.Input()
-    choose_button = sg.FilesBrowse("Choose")
-    
-    return [label, input, choose_button]
+label2 = sg.Text('Select destination folder:')
+input2 = sg.Input()
+choose_button2 = sg.FolderBrowse('Choose', key="folder")
 
+compress_button = sg.Button('Compress')
+output_label = sg.Text(key="output", text_color="green")
 
-compress = widget('Compress')
-destination = widget('Destination')
-compress_button = sg.Button("Compress")
+window = sg.Window('File Compressor',
+                   layout = [[label1, input1, choose_button1],
+                              [label2, input2, choose_button2],
+                               [compress_button, output_label]])
 
-window = sg.Window("File Compressor", layout=[[compress], [destination], [compress_button]])
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED:
+        break
+    filepaths = values['files'].split(';')
+    folder = values['folder']
+    make_archieve(filepaths, folder)
+    window["output"].update(value="Compression completed!")
 
-window.read()
 window.close()
